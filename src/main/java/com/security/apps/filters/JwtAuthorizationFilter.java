@@ -23,10 +23,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		System.out.println("**** JwtAuthorizationFilter ****");
+		String bearer="Bearer ";
 		String authorizationToken=request.getHeader("Authorization");
-		if(authorizationToken!=null && authorizationToken.equals("Authorization")) {
+		if(authorizationToken!=null && authorizationToken.startsWith(bearer)) {
+			String token=authorizationToken.replace(bearer, "");
 			try {
-				tokenService.isValidateToken(authorizationToken);
+				tokenService.isValidateToken(token);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}

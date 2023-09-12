@@ -66,8 +66,7 @@ public class TokenService {
     public boolean validateSignature(String token) throws ParseException {
     	boolean isValidSignature;
     	String algoConfig;
-    	String tk=token.replace("Bearer ", "");
-    	SignedJWT signedJWT=SignedJWT.parse(tk);
+    	SignedJWT signedJWT=SignedJWT.parse(token);
     	String algoToken=signedJWT.getHeader().getAlgorithm().getName();
     			
     	System.out.println("ALGO_TOKEN: "+algoToken);
