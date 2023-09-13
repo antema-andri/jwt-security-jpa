@@ -22,18 +22,19 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter{
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		System.out.println("**** JwtAuthorizationFilter ****");
 		String bearer="Bearer ";
 		String authorizationToken=request.getHeader("Authorization");
+		String token="";
 		if(authorizationToken!=null && authorizationToken.startsWith(bearer)) {
-			String token=authorizationToken.replace(bearer, "");
+			token=authorizationToken.replace(bearer, "");
 			try {
-				tokenService.isValidateToken(token);
+				if(tokenService.isValidateToken(token)) {
+					filterChain.doFilter(request, response);
+				}
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 		}
-		filterChain.doFilter(request, response);
 	}
 
 }

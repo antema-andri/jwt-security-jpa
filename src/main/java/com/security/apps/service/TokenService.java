@@ -59,26 +59,20 @@ public class TokenService {
     }
     
     public boolean isValidateToken(String token) throws ParseException {
-    	boolean isValid=validateSignature(token);
-    	return isValid;
+    	return validateSignature(token);
     }
     
     public boolean validateSignature(String token) throws ParseException {
     	boolean isValidSignature;
-    	String algoConfig;
     	SignedJWT signedJWT=SignedJWT.parse(token);
     	String algoToken=signedJWT.getHeader().getAlgorithm().getName();
-    			
     	System.out.println("ALGO_TOKEN: "+algoToken);
     	if(encrypter.getClass().getSimpleName().equals("SymetricEncrypter")){
-    		algoConfig=MacAlgorithm.HS512.getName();
-    		isValidSignature=algoToken.equals(algoConfig);
+    		isValidSignature=algoToken.equals("HS512");
         }
         else{
-        	algoConfig="RS256";
-        	isValidSignature=algoToken.equals(algoConfig);
+        	isValidSignature=algoToken.equals("RS256");
         }
-    	System.out.println("ALGO_CONFIG: "+algoConfig);
     	return isValidSignature;
     }
 }
