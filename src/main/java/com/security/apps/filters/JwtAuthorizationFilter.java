@@ -29,12 +29,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter{
 			token=authorizationToken.replace(bearer, "");
 			try {
 				if(tokenService.isValidateToken(token)) {
-					filterChain.doFilter(request, response);
+					
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 		}
+		filterChain.doFilter(request, response);
 	}
 
 }
