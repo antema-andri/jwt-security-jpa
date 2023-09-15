@@ -53,7 +53,7 @@ public class TokenService {
         return encoderParameters;
     }
     
-    public boolean isValidateToken(String token) throws ParseException {
+    public boolean isValidToken(String token) throws ParseException {
     	return validateSignature(token);
     }
     

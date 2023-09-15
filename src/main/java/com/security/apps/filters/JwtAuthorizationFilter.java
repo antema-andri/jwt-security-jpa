@@ -28,7 +28,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter{
 		if(authorizationToken!=null && authorizationToken.startsWith(bearer)) {
 			token=authorizationToken.replace(bearer, "");
 			try {
-				if(tokenService.isValidateToken(token)) {
+				if(tokenService.isValidToken(token)) {
 					
 				}
 			} catch (ParseException e) {
