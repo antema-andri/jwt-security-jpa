@@ -29,13 +29,20 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter{
 			token=authorizationToken.replace(bearer, "");
 			try {
 				if(tokenService.isValidToken(token)) {
-					
+					filterChain.doFilter(request, response);
+				}else {
+					response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	                response.getWriter().write("Access denied. Invalid token.");
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
+		}else if(request.getRequestURI().equals("/api/auth/token")){
+			filterChain.doFilter(request, response);
+		}else {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	        response.getWriter().write("Access denied. Missing token.");
 		}
-		filterChain.doFilter(request, response);
 	}
 
 }

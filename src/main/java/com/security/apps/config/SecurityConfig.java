@@ -33,6 +33,7 @@ public class SecurityConfig {
                     .requestMatchers("/api/auth/token").permitAll()
                     .anyRequest().authenticated()
             )
+//            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
             .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
             .httpBasic(withDefaults())
             .apply(new SecurCustomDsl(tokenService));
