@@ -30,7 +30,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			throws AuthenticationException {
 		String username=request.getParameter("username");
 		String password=request.getParameter("password");
-		System.out.println(username+" "+password);
 		UsernamePasswordAuthenticationToken u=new UsernamePasswordAuthenticationToken(username,password);
 		return authenticationManager.authenticate(u);
 	}
@@ -38,7 +37,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
-		System.out.println("** successfulAuthentication **");
 		String jwtAccessToken=tokenService.generateToken(authResult);
 		response.setHeader("Authorization", jwtAccessToken);
 	}

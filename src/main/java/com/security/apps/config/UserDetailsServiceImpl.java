@@ -28,7 +28,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         appUser.getRoles().forEach(r->{
             authorities.add(new SimpleGrantedAuthority(r.getRoleName()));
         });
-        System.out.println("**** UserDetailsServiceImpl *****");
         UserDetails userDetails=new User(appUser.getUsername(),appUser.getPassword(),authorities);
         return userDetails;
     }
