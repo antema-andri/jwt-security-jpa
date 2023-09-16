@@ -30,6 +30,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter{
 			try {
 				if(tokenService.isValidToken(token)) {
 					filterChain.doFilter(request, response);
+					return;
 				}else {
 					response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 	                response.getWriter().write("Access denied. Invalid token.");
@@ -37,7 +38,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter{
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-		}else if(request.getRequestURI().equals("/api/auth/token")){
+		}else if(request.getRequestURI().equals("/api/auth/token") || request.getRequestURI().startsWith("/h2-console")){
 			filterChain.doFilter(request, response);
 		}else {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
