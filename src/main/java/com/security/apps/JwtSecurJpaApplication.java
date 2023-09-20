@@ -2,7 +2,6 @@ package com.security.apps;
 
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,28 +17,22 @@ import com.security.apps.service.InitDataService;
 @SpringBootApplication
 @EnableConfigurationProperties(RsaKeysConfig.class)
 public class JwtSecurJpaApplication {
-	@Autowired
-	private InitDataService initDataService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(JwtSecurJpaApplication.class, args);
 	}
 	
 	@Bean
-    CommandLineRunner createUsers(AccountService accountService){
+    CommandLineRunner loadDatas(AccountService accountService, InitDataService initDataService){
         return args->{
+        	//load users
             accountService.save(new Role(null,"USER"));
             accountService.save(new Role(null,"ADMIN"));
             Stream.of("user1","user2","user3","admin").forEach(un->{
                 accountService.saveUser(un,"1234","1234");
             });
-        };
-    }
-	
-	@Bean
-    CommandLineRunner loadOtherData(){
-        return args->{
-        	initDataService.loadCountries();
+            //load countries
+            initDataService.loadCountries();
         };
     }
 	
