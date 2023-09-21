@@ -25,11 +25,19 @@ public class User {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+	@Column(unique = true)
     private String username;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private boolean actived;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles=new ArrayList<>();
+    
+    public User(Long id, String username, String password, boolean actived) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.actived = actived;
+	}
 }
