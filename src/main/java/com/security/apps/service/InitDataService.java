@@ -3,6 +3,7 @@ package com.security.apps.service;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import com.security.apps.dao.UserRepository;
 import com.security.apps.dto.CountryDto;
 import com.security.apps.dto.RoleDto;
 import com.security.apps.dto.UserDto;
+import com.security.apps.enums.UserRole;
 import com.security.apps.model.Country;
 import com.security.apps.model.Role;
 import com.security.apps.model.User;
@@ -49,11 +51,11 @@ public class InitDataService {
 		try {
 			List<UserDto> users=UtilFileReader.readJsonArray("static/jsondata/users.json", UserDto.class);
 			users.forEach(u->{
-				User user=new User(null, u.getUsername(), u.getPassword(), true);
+				User user=new User(null, u.getUsername(), new BCryptPasswordEncoder().encode(u.getPassword()), true);
 				if(user.getUsername().startsWith("user")) {
-					user.getRoles().add(roleRepository.findByRoleName("USER"));
+					user.getRoles().add(roleRepository.findByRoleName(UserRole.USER.toString()));
 				}else {
-					user.getRoles().add(roleRepository.findByRoleName("ADMIN"));
+					user.getRoles().add(roleRepository.findByRoleName(UserRole.ADMIN.toString()));
 				}
 				userRepository.save(user);
 			});
