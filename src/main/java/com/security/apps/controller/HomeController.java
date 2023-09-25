@@ -1,5 +1,6 @@
 package com.security.apps.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,11 @@ public class HomeController {
 	@GetMapping("/countrylist")
 	public List<CountryDto> countryList() {
 		return countryService.getCountryList();
+	}
+	
+	@GetMapping("/profile")
+	public Authentication auth(Authentication authentication) {
+		return authentication;
 	}
 	
 }

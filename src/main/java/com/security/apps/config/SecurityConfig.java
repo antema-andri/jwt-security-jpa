@@ -30,7 +30,11 @@ public class SecurityConfig {
             .csrf(csrf->csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(new AntPathRequestMatcher("/api/auth/token"), new AntPathRequestMatcher("/h2-console/**")).permitAll()
+                    .requestMatchers(
+                    		new AntPathRequestMatcher("/api/auth/token"),
+                    		new AntPathRequestMatcher("/h2-console/**")
+                    ).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/countrylist/**")).hasAnyAuthority("SCOPE_ADMIN")
                     .anyRequest().authenticated()
             )
             .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))

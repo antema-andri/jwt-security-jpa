@@ -32,7 +32,7 @@ public class TokenService {
                 .filter(authority -> !authority.startsWith("ROLE"))
                 .collect(Collectors.joining(" "));
         JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("self")
+                .issuer("http://localhost:8080")
                 .issuedAt(now)
                 .expiresAt(now.plus(1, ChronoUnit.HOURS))
                 .subject(authentication.getName())
