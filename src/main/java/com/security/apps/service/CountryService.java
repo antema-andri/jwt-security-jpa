@@ -7,23 +7,22 @@ import org.springframework.stereotype.Service;
 
 import com.security.apps.dao.CountryRepository;
 import com.security.apps.dto.CountryDto;
+import com.security.apps.mapper.CountryMapper;
 import com.security.apps.model.Country;
-import com.security.apps.utils.DtoMapper;
-
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
 public class CountryService {
 	private final CountryRepository countryRepository;
+	private final CountryMapper countryMapper;
 	
-	public List<Country> getAllCoutries(){
-		return countryRepository.findAll();
+	public Country getById(Long countryId){
+		return countryRepository.findById(countryId).orElse(null);
 	}
 	
 	public List<CountryDto> getCountryList(){
 		List<Country> countries=countryRepository.findAll();
-		List<CountryDto> countryDtos=countries.stream().map(co->DtoMapper.fromEntity(co)).collect(Collectors.toList());
-		return countryDtos;
+		return countries.stream().map(co->countryMapper.fromEntity(co)).collect(Collectors.toList());
 	}
 }

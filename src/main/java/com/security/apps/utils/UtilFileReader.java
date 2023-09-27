@@ -12,13 +12,13 @@ import com.security.apps.dto.BaseDto;
 
 public class UtilFileReader {
 	
-	public static <T extends BaseDto> T readJson(String classpathFile, Class<T> dtoClass) throws IOException {
+	public static <T> T readJson(String classpathFile, Class<T> dtoClass) throws IOException {
 		byte[] jsonData=getBytes(classpathFile);
 		ObjectMapper objectMapper=createObjectMapper();    
 		return objectMapper.readValue(jsonData , dtoClass);
 	}
 	
-	public static <T extends BaseDto> List<T> readJsonArray(String classpathFile, Class<T> dtoClass) throws IOException {
+	public static <T> List<T> readJsonArray(String classpathFile, Class<T> dtoClass) throws IOException {
 		byte[] jsonData=getBytes(classpathFile);
 		ObjectMapper objectMapper=createObjectMapper();
 		JavaType javaType=objectMapper.getTypeFactory().constructCollectionType(List.class, dtoClass);
