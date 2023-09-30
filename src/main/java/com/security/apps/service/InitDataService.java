@@ -14,6 +14,7 @@ import com.security.apps.dto.CountryDto;
 import com.security.apps.dto.RoleDto;
 import com.security.apps.dto.UserDto;
 import com.security.apps.enums.UserRole;
+import com.security.apps.mapper.EntityMapper;
 import com.security.apps.model.Country;
 import com.security.apps.model.Role;
 import com.security.apps.model.User;
@@ -28,6 +29,7 @@ public class InitDataService {
 	private final RoleRepository roleRepository;
 	private final UserRepository userRepository;
 	private final CountryRepository countryRepository;
+	private final EntityMapper entityMapper;
 	
 	public void loadDatas() {
 		this.loadRoles();
@@ -38,8 +40,8 @@ public class InitDataService {
 	public void loadRoles() {
 		try {
 			List<RoleDto> roles=UtilFileReader.readJsonArray("static/jsondata/roles.json", RoleDto.class);
-			roles.forEach(r->{
-				Role role=new Role(null, r.getName());
+			roles.forEach(rdto->{
+				Role role=entityMapper.fromDto(rdto);
 				roleRepository.save(role);
 			});
 		} catch (IOException e) {
@@ -50,8 +52,10 @@ public class InitDataService {
 	public void loadUsers() {
 		try {
 			List<UserDto> users=UtilFileReader.readJsonArray("static/jsondata/users.json", UserDto.class);
-			users.forEach(u->{
-				User user=new User(null, u.getUsername(), new BCryptPasswordEncoder().encode(u.getPassword()), true);
+			users.forEach(udto->{
+				User user=entityMapper.fromDto(udto);
+				user.setPassword(new BCryptPasswordEncoder().encode(udto.getPassword()));
+				user.setActived(true);
 				if(user.getUsername().startsWith("user")) {
 					user.getRoles().add(roleRepository.findByRoleName(UserRole.USER.toString()));
 				}else {
@@ -68,7 +72,7 @@ public class InitDataService {
 		try {
 			List<CountryDto> countries=UtilFileReader.readJsonArray("static/jsondata/countries.json", CountryDto.class);
 			countries.forEach(c->{
-				Country country=new Country(null, c.getName(), c.getCode());
+				Country country=entityMapper.fromDto(c);
 				countryRepository.save(country);
 			});
 		} catch (IOException e) {

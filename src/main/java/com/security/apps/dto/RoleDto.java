@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class RoleDto extends BaseDto{
-	private String name;
+	private Long id;
+	private String roleName;
 }

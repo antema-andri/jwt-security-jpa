@@ -1,4 +1,4 @@
 [
-  {"name": "USER"},
-  {"name": "ADMIN"}
+  {"roleName": "USER"},
+  {"roleName": "ADMIN"}
 ]
